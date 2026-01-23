@@ -25,6 +25,9 @@ let scrollToDate = (date) => {
 
 /**
  * Scroll to nearest day elm to today’s date
+ * NOTE: scrollToToday is it’s own function because I don’t
+ * want to have to run getNearestDayElm(today) every time
+ * I click the 'today' button on the website.
  */
 let scrollToToday = () => {
     nearestDayElm.scrollIntoView();
@@ -41,13 +44,15 @@ let dayList = document.querySelector('.dayList');
 document.querySelector('.todayBtn').addEventListener('click', scrollToToday);
 
 // get today’s date  YYYY-MM-DD
-let today = new Date().toISOString().slice(0, 10);
+// HACK: Rather than manually fuck with dates and timezones, Canada’s
+// localeDateString happens to output the correct format.
+let today = new Date().toLocaleDateString('en-CA')
 
-// find nearest element in dayList to today
+// find nearest element to today
 let nearestDayElm = getNearestDayElm(today);
 
-// wait for everything to load
-setTimeout(() => {
+// wait for all elements to render
+window.onload = (event) => {
     // scroll to today
     scrollToToday();
-}, 0);
+}
